@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/FriscoNP/go-fiber-boilerplate/internal/config"
 	"github.com/FriscoNP/go-fiber-boilerplate/internal/server"
@@ -12,7 +13,9 @@ func main() {
 
 	app := server.New()
 
-	if err := server.Start(app, cfg.AppPort); err != nil {
+	appPort := strconv.Itoa(cfg.App.Port)
+
+	if err := server.Start(app, appPort); err != nil {
 		log.Fatal("Failed to start server:", err)
 	}
 }

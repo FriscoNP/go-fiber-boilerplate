@@ -1,0 +1,4 @@
+app:
+  name: "Golang Service with Fiber"
+  port: 8080
+  env: "local"
