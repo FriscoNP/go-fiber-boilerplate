@@ -2,26 +2,33 @@ package config
 
 import (
 	"log"
-	"os"
 
-	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 )
 
 type Config struct {
-	AppName string
-	AppEnv  string
-	AppPort string
+	App App `yaml:"app"`
+}
+
+type App struct {
+	Name string `yaml:"name"`
+	Port int    `yaml:"port"`
+	Env  string `yaml:"env"`
 }
 
 func Load() Config {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("No .env file found, using system environment variables")
+	viper.SetConfigName("config.local")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("./internal/config")
+
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalf("Error reading config file: %v", err)
 	}
 
-	return Config{
-		AppName: os.Getenv("APP_NAME"),
-		AppEnv:  os.Getenv("APP_ENV"),
-		AppPort: os.Getenv("APP_PORT"),
+	var config Config
+	if err := viper.Unmarshal(&config); err != nil {
+		log.Fatalf("Error unmarshalling config: %v", err)
 	}
+
+	return config
 }
