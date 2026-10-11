@@ -1,3 +1,4 @@
+// Command api starts the HTTP service.
 package main
 
 import (
