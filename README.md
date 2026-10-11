@@ -20,7 +20,7 @@ restructuring.
 
 ## Quick start
 
-Prerequisites: Go 1.25+ (and optionally Docker).
+Prerequisites: Go 1.26+ (and optionally Docker).
 
 ```bash
 git clone git@github.com:FriscoNP/go-fiber-boilerplate.git
