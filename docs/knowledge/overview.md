@@ -22,7 +22,7 @@ sources:
 # Summary
 
 `go-fiber-boilerplate` is a deliberately small Go service skeleton built
-on [Fiber v3][^fiber-docs] with [viper][^viper-docs] configuration
+on Fiber v3[^fiber-docs] with viper[^viper-docs] configuration
 loading. It ships a single liveness endpoint and the package layout
 needed to grow a real API without restructuring.
 
