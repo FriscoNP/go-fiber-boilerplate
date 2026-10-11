@@ -1,7 +1,7 @@
 ---
 type: Playbook
 title: Containerization
-description: Status and intended content of the Dockerfile and docker-compose.yml placeholders.
+description: Status and intended content of the Dockerfile and Compose file.
 tags: [operations, docker, deployment]
 status: draft
 generated: { by: human:frisco, at: 2026-10-11T00:00:00Z }
@@ -14,14 +14,14 @@ sources:
 
 # Status: placeholder
 
-Both `Dockerfile` and `docker-compose.yml` exist in the repository but are
-**zero bytes**. Nothing builds or runs a container today. This concept is
-`status: draft` for that reason.[^docker-docs]
+Both `Dockerfile` and `docker-compose.yml` exist in the repository but
+are **zero bytes**. Nothing builds or runs a container today. This
+concept is `status: draft` for that reason.[^docker-docs]
 
 | File | Size | Effect |
 |------|------|--------|
-| `Dockerfile` | 0 bytes | `docker build .` fails with an empty Dockerfile error. |
-| `docker-compose.yml` | 0 bytes | `docker compose up` fails to parse an empty Compose file. |
+| `Dockerfile` | 0 bytes | `docker build .` fails on an empty Dockerfile. |
+| `docker-compose.yml` | 0 bytes | `docker compose up` fails to parse an empty file. |
 
 # Intended shape
 
@@ -55,17 +55,18 @@ services:
 
 # Blocking constraint
 
-`config.Load()` hard-codes the relative path `./internal/config` and calls
-`log.Fatalf` when the file is absent. Any container image must therefore
-provide `internal/config/config.local.yaml` at that path relative to the
-container's working directory, or the container exits immediately. Resolving
-this - by honoring an environment variable or a `--config` flag - is a
-prerequisite for a clean image, and is out of scope for this bundle.
+`config.Load()` hard-codes the relative path `./internal/config` and
+calls `log.Fatalf` when the file is absent. Any container image must
+therefore provide `internal/config/config.local.yaml` at that path
+relative to the container's working directory, or the container exits
+immediately. Resolving this - by honoring an environment variable or a
+`--config` flag - is a prerequisite for a clean image, and is out of
+scope for this bundle.
 
 # Work plan
 
-1. Decide how configuration reaches the container (mount vs. baked in vs.
-   env-var override).
+1. Decide how configuration reaches the container (mount vs. baked in
+   vs. env-var override).
 2. Write the multi-stage `Dockerfile`.
 3. Write `docker-compose.yml` with port mapping and a health check on
    `GET /api/health`.
@@ -74,7 +75,8 @@ prerequisite for a clean image, and is out of scope for this bundle.
 
 # Related concepts
 
-* [Configuration](/operations/configuration.md) for the file the image must supply.
+* [Configuration](/operations/configuration.md) for the file the image
+  must supply.
 * [Run locally](/operations/run-local.md) for the non-container path.
 
 [^docker-docs]: Docker multi-stage builds

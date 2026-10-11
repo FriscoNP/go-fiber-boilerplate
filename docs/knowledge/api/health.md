@@ -35,11 +35,12 @@ No path parameters, query parameters, headers, or request body.
 
 # Behavior
 
-- Always returns `200` while the process is alive; it performs no dependency
-  checks (no database or downstream probing).
-- Reached through the `/api` group defined in [routes](/components/routes.md),
-  so the effective path includes the `/api` prefix.
-- Implemented by `HealthCheck` in [handlers](/components/handlers.md).
+* Always returns `200` while the process is alive; it performs no
+  dependency checks (no database or downstream probing).
+* Reached through the `/api` group defined in
+  [routes](/components/routes.md), so the effective path includes the
+  `/api` prefix.
+* Implemented by `HealthCheck` in [handlers](/components/handlers.md).
 
 # Examples
 
@@ -51,4 +52,5 @@ curl -s http://localhost:8080/api/health
 # See also
 
 * [Routes](/components/routes.md) - where the path is registered.
-* [Run locally](/operations/run-local.md) - starting the server to reach it.
+* [Run locally](/operations/run-local.md) - starting the server to reach
+  it.

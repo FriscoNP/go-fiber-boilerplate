@@ -1,7 +1,7 @@
 ---
 type: Component
 title: Routes
-description: Owns the URL space by creating the /api group and registering every application endpoint.
+description: Creates the /api group and registers every application route.
 resource: internal/routes/routes.go
 tags: [routes, http, api]
 status: stable
@@ -19,8 +19,8 @@ func Register(app *fiber.App) {
 ```
 
 `Register` is the single entry point called by
-[server.New()](/components/server.md). All application routes belong inside
-the group created here.
+[server.New()](/components/server.md). All application routes belong
+inside the group created here.
 
 # URL space
 
@@ -28,8 +28,8 @@ the group created here.
 |--------|------|---------|-------------|
 | `GET` | `/api/health` | `handler.HealthCheck` | [Health check](/api/health.md) |
 
-The group prefix `/api` is applied by Fiber, so handlers always see the full
-path `/api/health`.
+The group prefix `/api` is applied by Fiber, so handlers always see the
+full path `/api/health`.
 
 # Extending
 
@@ -49,15 +49,17 @@ v1.Get("/widgets", handler.ListWidgets)
 
 # Behavioral notes
 
-- No `HEAD`-only, `OPTIONS`, or `Static` routes are registered, and no 404
-  handler is installed, so unmatched paths fall through to Fiber's default
-  `404` error page.
-- Middleware registered in [middleware](/components/middleware.md) applies to
-  these routes because it was registered first at the app level.
-- Only `GET` is implemented today; other methods against `/api/health` return
-  Fiber's default `405`-style error page rather than a JSON body.
+* No `HEAD`-only, `OPTIONS`, or `Static` routes are registered, and no
+  404 handler is installed, so unmatched paths fall through to Fiber's
+  default `404` error page.
+* Middleware registered in [middleware](/components/middleware.md)
+  applies to these routes because it was registered first at the app
+  level.
+* Only `GET` is implemented today; other methods against `/api/health`
+  return Fiber's default `405`-style error page rather than a JSON body.
 
 # Related concepts
 
-* [Handlers](/components/handlers.md) for what the registered functions do.
+* [Handlers](/components/handlers.md) for what the registered functions
+  do.
 * [Architecture](/architecture.md) for registration order.

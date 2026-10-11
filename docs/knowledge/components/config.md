@@ -1,7 +1,7 @@
 ---
 type: Component
 title: Configuration loader
-description: Reads internal/config/config.local.yaml with viper and unmarshals it into the Config struct, failing fast on any error.
+description: Reads internal/config/config.local.yaml with viper into Config.
 resource: internal/config/config.go
 tags: [config, viper, yaml]
 status: stable
@@ -44,9 +44,11 @@ type App struct {
 
 `Load()` performs four steps and returns `Config` by value:
 
-1. `viper.SetConfigName("config.local")` - the filename without extension.
+1. `viper.SetConfigName("config.local")` - the filename without
+   extension.
 2. `viper.SetConfigType("yaml")` - forces the YAML decoder.
-3. `viper.AddConfigPath("./internal/config")` - a **relative** search path.
+3. `viper.AddConfigPath("./internal/config")` - a **relative** search
+   path.
 4. `viper.ReadInConfig()` followed by `viper.Unmarshal(&config)`.
 
 Both error branches call `log.Fatalf`, so the process exits rather than
@@ -54,30 +56,31 @@ starting with partial configuration.
 
 # Behavioral notes
 
-- **Path resolution is relative to the process working directory.** The
+* **Path resolution is relative to the process working directory.** The
   documented invocation is `make run` from the repository root, because
-  `./internal/config` only resolves when the working directory is the repo
-  root. Running the binary from another directory fails at startup.
-- **`config.local.yaml` is gitignored.** A fresh clone has no config file, so
-  `make run` fails immediately until `example.config.local.yaml` is copied to
-  `config.local.yaml`.
-- **The `yaml:` struct tags are decorative.** viper's `Unmarshal` decodes with
-  `go-viper/mapstructure/v2`, whose default tag name is `mapstructure`, and
-  viper does not override it.[^viper-unmarshal] Field matching therefore falls
-  back to case-insensitive field-name matching, which happens to align with the
-  `app.*` keys. Rename a Go field and the key stops resolving - add a
-  `mapstructure:` tag if explicit mapping is wanted.
-- **Decoding is weakly typed.** viper configures `WeaklyTypedInput: true`, so a
-  quoted `"8080"` would still coerce to the `int` port.
-- **Not environment-variable driven.** No `viper.AutomaticEnv` or
+  `./internal/config` only resolves when the working directory is the
+  repo root. Running the binary from another directory fails at startup.
+* **`config.local.yaml` is gitignored.** A fresh clone has no config
+  file, so `make run` fails immediately until
+  `example.config.local.yaml` is copied to `config.local.yaml`.
+* **The `yaml:` struct tags are decorative.** viper's `Unmarshal`
+  decodes with `go-viper/mapstructure/v2`, whose default tag name is
+  `mapstructure`, and viper does not override it.[^viper-unmarshal] Field
+  matching therefore falls back to case-insensitive field-name matching,
+  which happens to align with the `app.*` keys. Rename a Go field and the
+  key stops resolving - add a `mapstructure:` tag if explicit mapping is
+  wanted.
+* **Decoding is weakly typed.** viper configures `WeaklyTypedInput: true`,
+  so a quoted `"8080"` would still coerce to the `int` port.
+* **Not environment-variable driven.** No `viper.AutomaticEnv` or
   `SetEnvPrefix` call exists, so `APP_PORT`-style overrides are not read.
-- **No reload.** `fsnotify` is present as an indirect dependency, but no
+* **No reload.** `fsnotify` is present as an indirect dependency, but no
   `WatchConfig` call is made; changes require a restart.
 
 # Related concepts
 
-* [Configuration operations](/operations/configuration.md) for the file format
-  and setup steps.
+* [Configuration operations](/operations/configuration.md) for the file
+  format and setup steps.
 * [Architecture](/architecture.md) for where loading happens in startup.
 
 [^viper-unmarshal]: spf13/viper repository

@@ -1,7 +1,7 @@
 ---
 type: Component
 title: Handlers
-description: The handler package where request handlers live; currently contains only HealthCheck.
+description: The handler package where request handlers live; one today.
 resource: internal/handler/health.go
 tags: [handlers, http, patterns]
 status: stable
@@ -28,21 +28,22 @@ func HealthCheck(ctx fiber.Ctx) error {
 Handlers follow the standard Fiber signature and are registered by
 [routes](/components/routes.md):
 
-- Signature `func(ctx fiber.Ctx) error`.
-- Return `nil` on success; return an `error` to hand control to Fiber's error
-  handler.
-- Build responses with `ctx.JSON(...)` using a `fiber.Map` or a typed struct.
-- One function per endpoint, named for the action (`HealthCheck`,
+* Signature `func(ctx fiber.Ctx) error`.
+* Return `nil` on success; return an `error` to hand control to Fiber's
+  error handler.
+* Build responses with `ctx.JSON(...)` using a `fiber.Map` or a typed
+  struct.
+* One function per endpoint, named for the action (`HealthCheck`,
   `ListWidgets`).
 
 # Behavioral notes
 
-- `ctx.JSON` sets `Content-Type: application/json` and serializes with Fiber's
-  default JSON encoder (Go's `encoding/json`).
-- No request binding is used today; handlers that need input should call
+* `ctx.JSON` sets `Content-Type: application/json` and serializes with
+  Fiber's default JSON encoder (Go's `encoding/json`).
+* No request binding is used today; handlers that need input should call
   `ctx.BodyParser(&dst)`.
-- The handler does not validate anything or consult configuration - it is a
-  pure liveness response.
+* The handler does not validate anything or consult configuration - it is
+  a pure liveness response.
 
 # Example: adding a handler
 
