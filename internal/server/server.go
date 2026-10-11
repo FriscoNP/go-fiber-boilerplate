@@ -1,3 +1,4 @@
+// Package server builds and starts the Fiber application.
 package server
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
+// New creates a Fiber app with middleware and routes registered.
 func New() *fiber.App {
 	app := fiber.New()
 
@@ -20,6 +22,7 @@ func New() *fiber.App {
 	return app
 }
 
+// Start listens on the given port.
 func Start(app *fiber.App, port string) error {
 	return app.Listen(fmt.Sprintf(":%s", port))
 }

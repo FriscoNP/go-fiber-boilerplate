@@ -1,3 +1,4 @@
+// Package routes registers the HTTP routes.
 package routes
 
 import (
@@ -5,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
+// Register mounts the API routes on app.
 func Register(app *fiber.App) {
 	api := app.Group("/api")
 
